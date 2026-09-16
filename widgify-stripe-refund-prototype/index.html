@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Widgify Third-party Refund Prototype</title>
+  <style>
+    :root {
+      --ink: #171927;
+      --muted: #697080;
+      --line: #e6e8ef;
+      --soft: #f6f7fb;
+      --paper: #ffffff;
+      --blue: #1769ff;
+      --blue-soft: #edf4ff;
+      --pink: #ec3fab;
+      --green: #18a86b;
+      --warn: #ff9f2e;
+      --phone: #11131a;
+      --shadow: 0 18px 44px rgba(30, 24, 52, .14);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #f3f4f8;
+      line-height: 1.42;
+    }
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 34px 28px 64px;
+    }
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 820px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .section {
+      margin-top: 24px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow);
+    }
+    h2 {
+      margin: 0 0 16px;
+      font-size: 22px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .mock {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      min-width: 0;
+    }
+    .phone {
+      width: 340px;
+      height: 720px;
+      border: 12px solid var(--phone);
+      border-radius: 42px;
+      background: var(--phone);
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(8, 10, 18, .28);
+    }
+    .phone.form-phone {
+      height: 720px;
+    }
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 30px;
+      background: #fbfcff;
+    }
+    .status {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #111827;
+      background: rgba(255,255,255,.82);
+      position: relative;
+      z-index: 6;
+    }
+    .nav {
+      height: 52px;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      padding: 0 16px;
+      background: #fbfcff;
+    }
+    .back {
+      display: block;
+      width: 28px;
+      height: 28px;
+      position: relative;
+    }
+    .back::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      border-left: 3px solid #111827;
+      border-bottom: 3px solid #111827;
+      transform: rotate(45deg);
+      border-radius: 2px;
+    }
+    .nav-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: .1px;
+    }
+    .screen-body {
+      padding: 22px 24px 0;
+    }
+    .intro {
+      margin: 0 0 22px;
+      color: #6b7382;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+    .label {
+      margin: 0 0 10px;
+      font-size: 20px;
+      font-weight: 900;
+    }
+    .setting-list {
+      margin-top: 18px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #edf0f5;
+    }
+    .setting-row {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 36px 1fr 22px;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid #edf0f5;
+      font-size: 15px;
+      font-weight: 800;
+      color: inherit;
+      text-decoration: none;
+    }
+    .setting-row:last-child { border-bottom: 0; }
+    .setting-row .sub {
+      display: block;
+      margin-top: 3px;
+      color: #8a92a2;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .circle-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      background: var(--blue-soft);
+      font-size: 15px;
+      font-weight: 900;
+    }
+    .chev {
+      width: 12px;
+      height: 12px;
+      border-right: 2px solid #b6bcc8;
+      border-top: 2px solid #b6bcc8;
+      transform: rotate(45deg);
+    }
+    .refund-only {
+      margin-top: 18px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: #eef5ff;
+      color: #385178;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.36;
+    }
+    .plan-hero {
+      margin-top: 4px;
+      padding: 18px;
+      border: 1px solid #e8edf5;
+      border-radius: 20px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 12px 28px rgba(31, 42, 68, .08);
+    }
+    .plan-hero h3 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: #11754c;
+      background: #eaf8f1;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .status-pill::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .detail-list {
+      margin-top: 16px;
+      overflow: hidden;
+      border: 1px solid #edf0f5;
+      border-radius: 18px;
+      background: #fff;
+    }
+    .detail-row {
+      min-height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 15px;
+      border-bottom: 1px solid #edf0f5;
+    }
+    .detail-row:last-child { border-bottom: 0; }
+    .detail-row span {
+      color: #818a9a;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .detail-row strong {
+      color: #202637;
+      font-size: 13px;
+      text-align: right;
+    }
+    .renewal-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: #385178;
+      background: #eef5ff;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.38;
+    }
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .chip {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      background: #f2f5fa;
+      color: #5e6676;
+      font-weight: 800;
+      font-size: 13px;
+      text-align: center;
+    }
+    .chip.selected {
+      color: #20273a;
+      background: #fff;
+      border-color: #315de8;
+      box-shadow: 0 8px 18px rgba(49, 93, 232, .1);
+    }
+    .field-label {
+      margin: 13px 0 8px;
+      color: #1e2434;
+      font-size: 14px;
+      font-weight: 900;
+    }
+    .input,
+    .textarea {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      background: #f0f3f8;
+      color: #6c7483;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .input {
+      min-height: 44px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+    }
+    .textarea {
+      position: relative;
+      min-height: 118px;
+      padding: 13px 14px 42px;
+    }
+    .counter {
+      position: absolute;
+      right: 14px;
+      bottom: 10px;
+      color: #8d94a3;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .upload {
+      width: 54px;
+      height: 54px;
+      margin-top: 12px;
+      display: grid;
+      place-items: center;
+      border: 1.5px solid #b8c3d6;
+      border-radius: 10px;
+      color: #8aa0c2;
+      font-size: 22px;
+      background: rgba(255,255,255,.46);
+    }
+    .primary {
+      position: absolute;
+      left: 56px;
+      right: 56px;
+      bottom: 32px;
+      height: 54px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2b7cff, #1769ff);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      box-shadow: 0 10px 18px rgba(23, 105, 255, .22);
+    }
+    .primary.disabled {
+      background: #b5bdcc;
+      box-shadow: none;
+    }
+    .notice {
+      margin: 12px 0 0;
+      color: #8490a2;
+      font-size: 11px;
+      text-align: center;
+    }
+    .success-card {
+      margin-top: 34px;
+      padding: 24px 18px;
+      border-radius: 24px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(31, 42, 68, .1);
+    }
+    .success-mark {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #eaf8f1;
+      color: var(--green);
+      font-size: 34px;
+      font-weight: 900;
+    }
+    .success-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+    .success-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .timeline {
+      margin-top: 22px;
+      padding: 0;
+      list-style: none;
+    }
+    .timeline li {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: #5f6878;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .timeline i {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-style: normal;
+      font-size: 12px;
+    }
+    .timeline span {
+      display: block;
+      margin-top: 2px;
+      color: #8b94a4;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .explain {
+      min-width: 0;
+      padding: 16px 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      color: #414858;
+      font-size: 14px;
+    }
+    .explain h3 {
+      margin: 0 0 10px;
+      color: var(--ink);
+      font-size: 17px;
+    }
+    .explain ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .explain li { margin: 8px 0; }
+    .copy-map {
+      margin-top: 14px;
+      font-size: 12px;
+    }
+    .copy-map caption {
+      padding: 0 0 8px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+      text-align: left;
+    }
+    .copy-map th,
+    .copy-map td {
+      padding: 8px 9px;
+      line-height: 1.34;
+    }
+    .copy-map td:first-child {
+      color: #303746;
+      font-weight: 800;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+    .flow-step {
+      position: relative;
+      min-height: 108px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .flow-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -11px;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid #aeb6c5;
+      border-right: 2px solid #aeb6c5;
+      transform: translateY(-50%) rotate(45deg);
+      background: transparent;
+    }
+    .flow-step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue);
+      font-size: 14px;
+    }
+    .flow-step span {
+      color: #4b5262;
+      font-size: 13px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      overflow: hidden;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+    th,
+    td {
+      padding: 12px 10px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #edf3fb;
+      color: #1e2738;
+      font-weight: 900;
+    }
+    code {
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: #f2f4f7;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+    @media (max-width: 980px) {
+      .topbar,
+      .grid,
+      .mock,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+      .phone {
+        margin: 0 auto;
+      }
+      .flow-step:not(:last-child)::after {
+        display: none;
+      }
+    }
+    .refund-form-screen .screen-body {
+      padding: 12px 22px 0;
+    }
+    .refund-form-screen .intro {
+      margin-bottom: 10px;
+      font-size: 12px;
+      line-height: 1.28;
+    }
+    .refund-form-screen .label {
+      margin-bottom: 6px;
+      font-size: 17px;
+    }
+    .refund-form-screen .chips {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .refund-form-screen .chip {
+      min-height: 32px;
+      padding: 4px 5px;
+      border-radius: 9px;
+      font-size: 10px;
+      line-height: 1.12;
+    }
+    .refund-form-screen .field-label {
+      margin: 7px 0 5px;
+      font-size: 12px;
+    }
+    .refund-form-screen .input {
+      min-height: 34px;
+      padding: 0 12px;
+      font-size: 11px;
+    }
+    .refund-form-screen .textarea {
+      min-height: 76px;
+      padding: 9px 12px 31px;
+      font-size: 11px;
+    }
+    .refund-form-screen .upload {
+      width: 36px;
+      height: 36px;
+      margin-top: 7px;
+      font-size: 16px;
+    }
+    .refund-form-screen .counter {
+      right: 12px;
+      bottom: 8px;
+      font-size: 11px;
+    }
+    .refund-form-screen .notice {
+      margin-top: 6px;
+      font-size: 10px;
+      line-height: 1.24;
+    }
+    .refund-form-screen .primary {
+      position: static;
+      display: block;
+      width: calc(100% - 88px);
+      height: 44px;
+      margin: 12px auto 0;
+      font-size: 16px;
+    }
+    .result-screen .screen-body {
+      padding: 16px 22px 0;
+    }
+    .result-screen .success-card {
+      margin-top: 18px;
+      padding: 20px 16px;
+    }
+    .result-screen .success-mark {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 12px;
+      font-size: 30px;
+    }
+    .result-screen .success-card h3 {
+      font-size: 20px;
+    }
+    .result-screen .success-card p {
+      font-size: 12px;
+    }
+    .result-screen .timeline {
+      margin-top: 18px;
+    }
+    .result-screen .timeline li {
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+    .result-screen .refund-only {
+      margin-top: 10px;
+      padding: 11px 12px;
+      font-size: 11px;
+    }
+    .result-screen .primary {
+      position: static;
+      display: block;
+      width: calc(100% - 88px);
+      height: 46px;
+      margin: 14px auto 0;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div>
+        <h1>Widgify Third-party Refund Consultation</h1>
+        <p class="lead">独立退款咨询入口原型，仅面向 Stripe 等第三方支付订单。页面参考 Emojito Feedback 的轻量表单结构，但去掉普通反馈分类，避免用户在退款场景里看到无关选项。</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <h2>一、入口、订阅详情与表单页面</h2>
+      <div class="grid">
+        <article class="mock">
+          <div class="phone" id="support-entry">
+            <div class="screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <div class="back"></div>
+                <div class="nav-title">Support</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <p class="intro">Manage your subscription and get help with payment questions.</p>
+                <div class="label">Subscription</div>
+                <div class="setting-list">
+                  <a class="setting-row" href="#premium-plan-detail">
+                    <div class="circle-icon">P</div>
+                    <div>Premium Plan<span class="sub">Active · Stripe weekly plan</span></div>
+                    <div class="chev"></div>
+                  </a>
+                  <div class="setting-row">
+                    <div class="circle-icon">$</div>
+                    <div>Refund Help<span class="sub">For third-party checkout orders</span></div>
+                    <div class="chev"></div>
+                  </div>
+                </div>
+                <div class="refund-only">
+                  Apple in-app purchases should continue to use Apple's refund path. This entry is shown only when the user has a third-party payment order.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>入口说明</h3>
+            <ul>
+              <li>采用独立入口，不复用普通 Feedback 页面，避免出现 App Bug、Suggestion 等无关分类。</li>
+              <li>入口建议展示在订阅管理/设置页支付帮助区域，仅对第三方支付订单用户展示。</li>
+              <li>若用户没有第三方支付订单，退款入口不展示，仍走普通订阅管理或 Apple 官方退款路径。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>入口页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Support</td>
+                  <td>支持 / 帮助</td>
+                </tr>
+                <tr>
+                  <td>Manage your subscription and get help with payment questions.</td>
+                  <td>管理订阅，并获取支付问题帮助。</td>
+                </tr>
+                <tr>
+                  <td>Subscription</td>
+                  <td>订阅</td>
+                </tr>
+                <tr>
+                  <td>Premium Plan</td>
+                  <td>高级会员套餐</td>
+                </tr>
+                <tr>
+                  <td>Active · Stripe weekly plan</td>
+                  <td>已生效 · Stripe 周订阅套餐</td>
+                </tr>
+                <tr>
+                  <td>Refund Help</td>
+                  <td>退款帮助</td>
+                </tr>
+                <tr>
+                  <td>For third-party checkout orders</td>
+                  <td>适用于第三方收银台订单</td>
+                </tr>
+                <tr>
+                  <td>Apple in-app purchases should continue to use Apple's refund path. This entry is shown only when the user has a third-party payment order.</td>
+                  <td>Apple 应用内购买继续走 Apple 官方退款路径。该入口仅在用户存在第三方支付订单时展示。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="mock" id="premium-plan-detail">
+          <div class="phone">
+            <div class="screen subscription-detail-screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <a class="back" href="#support-entry" aria-label="Back to Support"></a>
+                <div class="nav-title">Premium Plan</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <div class="plan-hero">
+                  <h3>Widgify Premium</h3>
+                  <div class="status-pill">Active</div>
+                </div>
+                <div class="detail-list">
+                  <div class="detail-row"><span>Next Renewal</span><strong>Sep 23, 2026</strong></div>
+                  <div class="detail-row"><span>Billing Cycle</span><strong>Weekly</strong></div>
+                  <div class="detail-row"><span>Price</span><strong>$2.99/week</strong></div>
+                  <div class="detail-row"><span>Payment Method</span><strong>Stripe</strong></div>
+                </div>
+                <div class="renewal-note">Your subscription renews automatically each week. You can cancel at any time before the next renewal date.</div>
+                <button class="primary">Cancel Subscription</button>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>订阅详情页说明</h3>
+            <ul>
+              <li>用户在入口页点击 Premium Plan 后进入本页，返回按钮回到 Support 入口。</li>
+              <li>清晰展示当前续订状态、下次续订日期、订阅周期、价格与支付渠道。</li>
+              <li>取消订阅按钮复用退款帮助页的蓝色主按钮样式，保持流程视觉一致。</li>
+              <li>点击 Cancel Subscription 后应进入二次确认流程；本原型先展示入口，不展开确认弹窗。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>订阅详情页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Premium Plan</td><td>高级会员套餐</td></tr>
+                <tr><td>Widgify Premium</td><td>Widgify 高级会员</td></tr>
+                <tr><td>Active</td><td>订阅生效中</td></tr>
+                <tr><td>Next Renewal</td><td>下次续订日期</td></tr>
+                <tr><td>Sep 23, 2026</td><td>2026 年 9 月 23 日</td></tr>
+                <tr><td>Billing Cycle</td><td>订阅周期</td></tr>
+                <tr><td>Weekly</td><td>每周</td></tr>
+                <tr><td>Price</td><td>价格</td></tr>
+                <tr><td>$2.99/week</td><td>每周 2.99 美元</td></tr>
+                <tr><td>Payment Method</td><td>支付方式</td></tr>
+                <tr><td>Stripe</td><td>Stripe 支付</td></tr>
+                <tr><td>Your subscription renews automatically each week. You can cancel at any time before the next renewal date.</td><td>订阅将每周自动续订。你可以在下次续订日期前随时取消。</td></tr>
+                <tr><td>Cancel Subscription</td><td>取消订阅</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="mock">
+          <div class="phone form-phone">
+            <div class="screen refund-form-screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <div class="back"></div>
+                <div class="nav-title">Refund Help</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <p class="intro">Tell us about your third-party payment. We'll review your order and reply by email.</p>
+                <div class="label">Refund Reason</div>
+                <div class="chips">
+                  <div class="chip selected">Duplicate</div>
+                  <div class="chip">Wrong Plan</div>
+                  <div class="chip">Paid Locked</div>
+                  <div class="chip">Cancel</div>
+                  <div class="chip">Unauthorized</div>
+                  <div class="chip">Other</div>
+                </div>
+                <div class="field-label">Order Email</div>
+                <div class="input">name@example.com</div>
+                <div class="field-label">Order ID or Invoice ID</div>
+                <div class="input">Optional invoice or session ID</div>
+                <div class="field-label">Details</div>
+                <div class="textarea">
+                  Include purchase time, amount, plan, and what support should review.
+                  <div class="upload">+</div>
+                  <div class="counter">0/500</div>
+                </div>
+                <div class="notice">Attach receipt or bank charge record if needed.</div>
+                <button class="primary">Submit</button>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>表单说明</h3>
+            <ul>
+              <li>退款原因只保留支付相关问题：重复扣费、套餐错误、已付款未解锁、取消/退款请求、非本人支付、其他。</li>
+              <li>字段建议：订单邮箱必填；订单号/发票号选填但强提示；详情必填；凭证截图可选。</li>
+              <li>客户端自动带上 <code>user_id</code>、<code>app_version</code>、<code>device_region</code>、<code>storefront</code>、<code>payment_channel=stripe</code>、<code>subscription_id</code>、<code>invoice_id</code> 等信息。</li>
+              <li>提交后进入中台反馈系统，由运营/客服查询 Stripe 订单并处理退款、取消订阅或权益修复。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>表单页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Refund Help</td>
+                  <td>退款帮助</td>
+                </tr>
+                <tr>
+                  <td>Tell us about your third-party payment. We'll review your order and reply by email.</td>
+                  <td>请告诉我们你的第三方支付问题。我们会审核订单，并通过邮件回复。</td>
+                </tr>
+                <tr>
+                  <td>Refund Reason</td>
+                  <td>退款原因</td>
+                </tr>
+                <tr>
+                  <td>Duplicate</td>
+                  <td>重复扣费</td>
+                </tr>
+                <tr>
+                  <td>Wrong Plan</td>
+                  <td>套餐错误</td>
+                </tr>
+                <tr>
+                  <td>Paid Locked</td>
+                  <td>已付款但权益未解锁</td>
+                </tr>
+                <tr>
+                  <td>Cancel</td>
+                  <td>取消订阅 / 退款请求</td>
+                </tr>
+                <tr>
+                  <td>Unauthorized</td>
+                  <td>非本人支付 / 未授权扣费</td>
+                </tr>
+                <tr>
+                  <td>Other</td>
+                  <td>其他</td>
+                </tr>
+                <tr>
+                  <td>Order Email</td>
+                  <td>订单邮箱</td>
+                </tr>
+                <tr>
+                  <td>name@example.com</td>
+                  <td>邮箱输入示例</td>
+                </tr>
+                <tr>
+                  <td>Order ID or Invoice ID</td>
+                  <td>订单号或发票号</td>
+                </tr>
+                <tr>
+                  <td>Optional invoice or session ID</td>
+                  <td>选填：发票号或支付会话 ID</td>
+                </tr>
+                <tr>
+                  <td>Details</td>
+                  <td>问题详情</td>
+                </tr>
+                <tr>
+                  <td>Include purchase time, amount, plan, and what support should review.</td>
+                  <td>请填写购买时间、金额、套餐，以及希望客服核查的问题。</td>
+                </tr>
+                <tr>
+                  <td>Attach receipt or bank charge record if needed.</td>
+                  <td>如有需要，可上传收据或银行扣费记录。</td>
+                </tr>
+                <tr>
+                  <td>Submit</td>
+                  <td>提交</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>二、提交结果与处理路径</h2>
+      <div class="grid">
+        <article class="mock">
+          <div class="phone">
+            <div class="screen result-screen">
+              <div class="status"><span>5:51 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <div class="back"></div>
+                <div class="nav-title">Request Sent</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <div class="success-card">
+                  <div class="success-mark">✓</div>
+                  <h3>Refund Request Sent</h3>
+                  <p>We've received your request. Our support team will review your third-party payment order and reply by email.</p>
+                </div>
+                <ul class="timeline">
+                  <li><i>1</i><div>Request submitted<span>Order info and attachments are sent to support.</span></div></li>
+                  <li><i>2</i><div>Payment reviewed<span>Support checks Stripe order status and subscription state.</span></div></li>
+                  <li><i>3</i><div>Result by email<span>Refund, cancellation, or unlock result will be confirmed by email.</span></div></li>
+                </ul>
+                <div class="refund-only">
+                  For faster handling, please avoid opening a bank dispute before our team reviews the order.
+                </div>
+                <button class="primary">Done</button>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>提交后说明</h3>
+            <ul>
+              <li>提交成功后只承诺“收到并审核”，不在 App 内承诺一定退款。</li>
+              <li>处理结果通过邮件反馈，便于运营保留沟通记录，也能降低用户直接走银行投诉或 Stripe 投诉的概率。</li>
+              <li>若核实为 Apple IAP 订单，邮件或 App 内提示用户跳转 Apple 官方退款入口处理。</li>
+              <li>若核实为第三方支付订单，客服按 Stripe 后台能力处理退款、取消续订或补发权益。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>提交成功页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Request Sent</td>
+                  <td>请求已发送</td>
+                </tr>
+                <tr>
+                  <td>Refund Request Sent</td>
+                  <td>退款请求已提交</td>
+                </tr>
+                <tr>
+                  <td>We've received your request. Our support team will review your third-party payment order and reply by email.</td>
+                  <td>我们已收到你的请求。客服团队会审核你的第三方支付订单，并通过邮件回复。</td>
+                </tr>
+                <tr>
+                  <td>Request submitted</td>
+                  <td>请求已提交</td>
+                </tr>
+                <tr>
+                  <td>Order info and attachments are sent to support.</td>
+                  <td>订单信息和附件已发送给客服。</td>
+                </tr>
+                <tr>
+                  <td>Payment reviewed</td>
+                  <td>支付订单审核中</td>
+                </tr>
+                <tr>
+                  <td>Support checks Stripe order status and subscription state.</td>
+                  <td>客服会检查 Stripe 订单状态和订阅状态。</td>
+                </tr>
+                <tr>
+                  <td>Result by email</td>
+                  <td>通过邮件反馈结果</td>
+                </tr>
+                <tr>
+                  <td>Refund, cancellation, or unlock result will be confirmed by email.</td>
+                  <td>退款、取消订阅或权益解锁结果会通过邮件确认。</td>
+                </tr>
+                <tr>
+                  <td>For faster handling, please avoid opening a bank dispute before our team reviews the order.</td>
+                  <td>为便于更快处理，请尽量在客服审核前不要先发起银行争议。</td>
+                </tr>
+                <tr>
+                  <td>Done</td>
+                  <td>完成</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="explain">
+          <h3>字段与中台对接建议</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>字段</th>
+                <th>来源</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>feedback_type</code></td>
+                <td>固定值</td>
+                <td>Third-party payment refund，用于中台单独筛选退款咨询。</td>
+              </tr>
+              <tr>
+                <td><code>refund_reason</code></td>
+                <td>用户选择</td>
+                <td>Duplicate Charge / Wrong Plan / Paid but Locked / Cancel Request / Unauthorized Payment / Other。</td>
+              </tr>
+              <tr>
+                <td><code>order_email</code></td>
+                <td>用户填写</td>
+                <td>必填，用于客服查找 Stripe Customer 或收据。</td>
+              </tr>
+              <tr>
+                <td><code>order_id</code> / <code>invoice_id</code></td>
+                <td>用户填写或客户端带入</td>
+                <td>可选；如 App 已缓存 Stripe 订单信息，则自动带入。</td>
+              </tr>
+              <tr>
+                <td><code>payment_channel</code></td>
+                <td>客户端</td>
+                <td>固定为 stripe；该入口不处理 Apple IAP 订单。</td>
+              </tr>
+              <tr>
+                <td><code>attachments</code></td>
+                <td>用户上传</td>
+                <td>支付凭证、银行扣费记录、收据截图等。</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>三、退款咨询流程</h2>
+      <div class="flow">
+        <div class="flow-step">
+          <strong>1. 识别订单</strong>
+          <span>用户进入设置页，App 判断存在第三方支付订单后展示 Refund Help。</span>
+        </div>
+        <div class="flow-step">
+          <strong>2. 填写表单</strong>
+          <span>用户选择退款原因，填写订单邮箱、订单号和问题详情，可上传支付凭证。</span>
+        </div>
+        <div class="flow-step">
+          <strong>3. 提交中台</strong>
+          <span>App 将用户填写内容和客户端订单信息提交到中台反馈系统。</span>
+        </div>
+        <div class="flow-step">
+          <strong>4. 人工处理</strong>
+          <span>运营/客服在 Stripe 或内部后台核验订单，处理退款、取消续订或补发权益。</span>
+        </div>
+        <div class="flow-step">
+          <strong>5. 邮件反馈</strong>
+          <span>处理结果通过邮件通知用户；异常订单进入风险记录和退款率监控。</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
