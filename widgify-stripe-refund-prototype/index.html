@@ -240,6 +240,20 @@
       border-radius: 50%;
       background: var(--green);
     }
+    .status-pill.inactive {
+      color: #687181;
+      background: #eef1f5;
+    }
+    .status-pill.inactive::before {
+      background: #8b94a4;
+    }
+    .status-pill.canceled {
+      color: #98620e;
+      background: #fff4da;
+    }
+    .status-pill.canceled::before {
+      background: #e6a11a;
+    }
     .detail-list {
       margin-top: 16px;
       overflow: hidden;
@@ -276,6 +290,133 @@
       font-size: 11px;
       font-weight: 800;
       line-height: 1.38;
+    }
+    .primary-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .confirm-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 24, 39, .48);
+      backdrop-filter: blur(2px);
+    }
+    .confirm-dialog {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 22px 48px rgba(17, 24, 39, .28);
+      text-align: center;
+    }
+    .confirm-content {
+      padding: 24px 20px 20px;
+    }
+    .confirm-dialog h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+    .confirm-dialog p {
+      margin: 0;
+      color: #697386;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .confirm-actions {
+      display: grid;
+      border-top: 1px solid #edf0f5;
+    }
+    .confirm-action {
+      min-height: 50px;
+      border: 0;
+      border-bottom: 1px solid #edf0f5;
+      background: #fff;
+      color: var(--blue);
+      font: inherit;
+      font-size: 15px;
+      font-weight: 900;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .confirm-action:last-child { border-bottom: 0; }
+    .confirm-action.danger { color: #d63b45; }
+    .outcome-banner {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #eaf8f1;
+      color: #1d6f4e;
+      text-align: center;
+    }
+    .outcome-banner strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .outcome-banner span {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+    .empty-plan {
+      margin-top: 16px;
+      padding: 22px 18px;
+      border: 1px solid #e8edf5;
+      border-radius: 18px;
+      background: #fff;
+      text-align: center;
+    }
+    .empty-plan h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+    }
+    .empty-plan p {
+      margin: 0;
+      color: #7b8495;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .empty-note {
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      color: #385178;
+      background: #eef5ff;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.42;
+    }
+    .empty-actions {
+      position: absolute;
+      left: 34px;
+      right: 34px;
+      bottom: 28px;
+      display: grid;
+      gap: 10px;
+    }
+    .empty-secondary {
+      min-height: 48px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+    }
+    .empty-secondary {
+      border: 1px solid #cfd8e8;
+      color: var(--blue);
+      background: #fff;
     }
     .chips {
       display: grid;
@@ -475,6 +616,156 @@
       color: #303746;
       font-weight: 800;
     }
+    .logic-intro {
+      margin: -4px 0 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .logic-entry {
+      max-width: 760px;
+      margin: 0 auto 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1.35fr);
+      align-items: center;
+      gap: 8px;
+    }
+    .logic-node {
+      min-width: 0;
+      min-height: 76px;
+      padding: 12px 14px;
+      border: 1px solid #dfe5ef;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .logic-node.is-start {
+      border-color: #bfd3ff;
+      background: var(--blue-soft);
+    }
+    .logic-node.is-success {
+      border-color: #bfe6d3;
+      background: #eef9f4;
+    }
+    .logic-node.is-warning {
+      border-color: #f2d29b;
+      background: #fff8e9;
+    }
+    .logic-node.is-muted {
+      border-color: #d9dee7;
+      background: #f6f7fa;
+    }
+    .logic-node.is-refund {
+      border-color: #d7cdfb;
+      background: #f5f1ff;
+    }
+    .logic-node span {
+      margin-bottom: 3px;
+      color: #7c8595;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .logic-node strong {
+      font-size: 14px;
+      line-height: 1.3;
+    }
+    .logic-node small {
+      margin-top: 4px;
+      color: #778092;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .logic-arrow {
+      color: #9ba4b3;
+      font-size: 24px;
+      font-weight: 900;
+      text-align: center;
+    }
+    .logic-paths {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(260px, .9fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+    .logic-lane {
+      min-width: 0;
+      padding-top: 14px;
+      border-top: 3px solid #c9d9ff;
+    }
+    .logic-lane.refund-lane { border-top-color: #d9cdfc; }
+    .logic-lane-head {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logic-lane-tag {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #fff;
+      background: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .refund-lane .logic-lane-tag { background: #7859f5; }
+    .logic-lane-head strong {
+      display: block;
+      font-size: 16px;
+    }
+    .logic-lane-head span:last-child {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .logic-subpath + .logic-subpath {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    .logic-branch-label {
+      margin-bottom: 9px;
+      color: #4f5a6c;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .logic-chain {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr) 30px minmax(0, 1fr);
+      align-items: center;
+      gap: 5px;
+    }
+    .logic-results-label {
+      margin: 9px 0 6px;
+      color: #8790a0;
+      font-size: 11px;
+      font-weight: 800;
+      text-align: center;
+    }
+    .logic-results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .logic-vertical {
+      display: grid;
+      gap: 7px;
+    }
+    .logic-down-arrow {
+      height: 18px;
+      color: #a49bbd;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 18px;
+      text-align: center;
+    }
     .flow {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -545,12 +836,31 @@
       .flow {
         grid-template-columns: 1fr;
       }
+      .logic-paths {
+        grid-template-columns: 1fr;
+      }
       .phone {
         margin: 0 auto;
       }
       .flow-step:not(:last-child)::after {
         display: none;
       }
+    }
+    @media (max-width: 700px) {
+      .page { padding: 22px 14px 48px; }
+      .section { padding: 18px 14px; }
+      .logic-entry,
+      .logic-chain,
+      .logic-results {
+        grid-template-columns: 1fr;
+      }
+      .logic-entry .logic-arrow,
+      .logic-chain .logic-arrow {
+        height: 24px;
+        transform: rotate(90deg);
+        line-height: 24px;
+      }
+      .logic-results-label { margin: 10px 0; }
     }
     .refund-form-screen .screen-body {
       padding: 12px 22px 0;
@@ -664,6 +974,125 @@
       </div>
     </div>
 
+    <section class="section" id="interaction-overview">
+      <h2>整体交互逻辑</h2>
+      <p class="logic-intro">从 Support 入口开始，按用户的订阅状态和点击操作进入对应页面。</p>
+
+      <div class="logic-entry">
+        <a class="logic-node is-start" href="#support-entry">
+          <span>1 · 入口</span>
+          <strong>打开 Support</strong>
+          <small>展示 Premium Plan；Stripe 订单用户同时展示 Refund Help</small>
+        </a>
+        <div class="logic-arrow" aria-hidden="true">→</div>
+        <div class="logic-node">
+          <span>2 · 用户选择</span>
+          <strong>查看订阅状态，或提交退款咨询</strong>
+          <small>两个入口分别进入下方订阅状态与退款帮助流程</small>
+        </div>
+      </div>
+
+      <div class="logic-paths">
+        <div class="logic-lane">
+          <div class="logic-lane-head">
+            <div class="logic-lane-tag">A</div>
+            <div>
+              <strong>Premium Plan · 订阅状态流程</strong>
+              <span>先查询 Apple 与 Stripe 订阅状态，再展示对应详情</span>
+            </div>
+          </div>
+
+          <div class="logic-subpath">
+            <div class="logic-branch-label">查询到有效订阅</div>
+            <div class="logic-chain">
+              <a class="logic-node is-success" href="#premium-plan-detail">
+                <span>Active</span>
+                <strong>订阅详情页</strong>
+                <small>显示续订日、周期、价格与渠道</small>
+              </a>
+              <div class="logic-arrow" aria-hidden="true">→</div>
+              <a class="logic-node" href="#cancel-subscription-confirm">
+                <span>点击取消</span>
+                <strong>Cancel Subscription</strong>
+                <small>进入二次确认弹窗</small>
+              </a>
+              <div class="logic-arrow" aria-hidden="true">→</div>
+              <a class="logic-node is-warning" href="#cancel-subscription-confirm">
+                <span>二次确认</span>
+                <strong>选择保留或确认取消</strong>
+                <small>此时尚未改变订阅状态</small>
+              </a>
+            </div>
+            <div class="logic-results-label">确认弹窗的两个结果分支 ↓</div>
+            <div class="logic-results">
+              <a class="logic-node is-success" href="#subscription-kept">
+                <span>Keep Subscription</span>
+                <strong>订阅已保留</strong>
+                <small>保持 Active，并继续按原日期续订</small>
+              </a>
+              <a class="logic-node is-warning" href="#subscription-canceled">
+                <span>Confirm Cancellation</span>
+                <strong>已取消续订</strong>
+                <small>权益保留到当前周期结束，之后不再扣费</small>
+              </a>
+            </div>
+          </div>
+
+          <div class="logic-subpath">
+            <div class="logic-branch-label">未查询到有效订阅</div>
+            <div class="logic-chain">
+              <a class="logic-node is-muted" href="#premium-plan-no-subscription">
+                <span>Not Subscribed</span>
+                <strong>未订阅状态详情页</strong>
+                <small>不展示续订日期、价格或支付方式</small>
+              </a>
+              <div class="logic-arrow" aria-hidden="true">→</div>
+              <a class="logic-node" href="#premium-plan-no-subscription">
+                <span>唯一操作</span>
+                <strong>Restore Purchases</strong>
+                <small>重新检查 Apple 与 Stripe 状态</small>
+              </a>
+              <div class="logic-arrow" aria-hidden="true">→</div>
+              <div class="logic-node">
+                <span>重新查询</span>
+                <strong>按最新结果刷新页面</strong>
+                <small>有效则进入 Active；无效则保持 Not Subscribed</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="logic-lane refund-lane">
+          <div class="logic-lane-head">
+            <div class="logic-lane-tag">B</div>
+            <div>
+              <strong>Refund Help · 退款咨询流程</strong>
+              <span>仅对使用 Stripe 支付的用户展示</span>
+            </div>
+          </div>
+          <div class="logic-vertical">
+            <a class="logic-node is-refund" href="#refund-help-form">
+              <span>点击 Refund Help</span>
+              <strong>填写退款咨询表单</strong>
+              <small>选择原因并填写订单与问题信息</small>
+            </a>
+            <div class="logic-down-arrow" aria-hidden="true">↓</div>
+            <div class="logic-node">
+              <span>提交</span>
+              <strong>订单信息进入中台</strong>
+              <small>同时带入 Stripe 与客户端订单字段</small>
+            </div>
+            <div class="logic-down-arrow" aria-hidden="true">↓</div>
+            <a class="logic-node is-success" href="#refund-request-sent">
+              <span>Request Sent</span>
+              <strong>展示提交成功页</strong>
+              <small>客服审核订单并通过邮件反馈结果</small>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <h2>一、入口、订阅详情与表单页面</h2>
       <div class="grid">
@@ -771,7 +1200,7 @@
                   <div class="detail-row"><span>Payment Method</span><strong>Stripe</strong></div>
                 </div>
                 <div class="renewal-note">Your subscription renews automatically each week. You can cancel at any time before the next renewal date.</div>
-                <button class="primary">Cancel Subscription</button>
+                <a class="primary primary-link" href="#cancel-subscription-confirm">Cancel Subscription</a>
               </div>
             </div>
           </div>
@@ -781,7 +1210,7 @@
               <li>用户在入口页点击 Premium Plan 后进入本页，返回按钮回到 Support 入口。</li>
               <li>清晰展示当前续订状态、下次续订日期、订阅周期、价格与支付渠道。</li>
               <li>取消订阅按钮复用退款帮助页的蓝色主按钮样式，保持流程视觉一致。</li>
-              <li>点击 Cancel Subscription 后应进入二次确认流程；本原型先展示入口，不展开确认弹窗。</li>
+              <li>点击 Cancel Subscription 后进入二次确认页，明确权益保留日期与停止续费结果。</li>
             </ul>
             <table class="copy-map">
               <caption>订阅详情页文案翻译</caption>
@@ -810,7 +1239,217 @@
           </div>
         </article>
 
-        <article class="mock">
+        <article class="mock" id="cancel-subscription-confirm">
+          <div class="phone">
+            <div class="screen subscription-detail-screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <a class="back" href="#premium-plan-detail" aria-label="Back to Premium Plan"></a>
+                <div class="nav-title">Premium Plan</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <div class="plan-hero">
+                  <h3>Widgify Premium</h3>
+                  <div class="status-pill">Active</div>
+                </div>
+                <div class="detail-list">
+                  <div class="detail-row"><span>Next Renewal</span><strong>Sep 23, 2026</strong></div>
+                  <div class="detail-row"><span>Billing Cycle</span><strong>Weekly</strong></div>
+                  <div class="detail-row"><span>Price</span><strong>$2.99/week</strong></div>
+                  <div class="detail-row"><span>Payment Method</span><strong>Stripe</strong></div>
+                </div>
+                <div class="renewal-note">Your subscription renews automatically each week. You can cancel at any time before the next renewal date.</div>
+              </div>
+              <div class="confirm-overlay">
+                <div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="cancel-dialog-title">
+                  <div class="confirm-content">
+                    <h3 id="cancel-dialog-title">Cancel Subscription?</h3>
+                    <p>Your Premium access will remain active until Sep 23, 2026. You won't be charged again after cancellation.</p>
+                  </div>
+                  <div class="confirm-actions">
+                    <a class="confirm-action" href="#subscription-kept">Keep Subscription</a>
+                    <a class="confirm-action danger" href="#subscription-canceled">Confirm Cancellation</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>取消订阅确认页说明</h3>
+            <ul>
+              <li>用户在订阅详情页点击 Cancel Subscription 后，先展示二次确认弹窗，避免误操作。</li>
+              <li>弹窗明确说明当前权益保留到本计费周期结束，并停止后续自动扣费。</li>
+              <li>Keep Subscription 进入订阅保留结果页；Confirm Cancellation 提交请求后进入取消结果页。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>取消订阅确认页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Cancel Subscription?</td><td>确认取消订阅？</td></tr>
+                <tr><td>Your Premium access will remain active until Sep 23, 2026. You won't be charged again after cancellation.</td><td>Premium 权益将保留至 2026 年 9 月 23 日。取消后不会再次扣费。</td></tr>
+                <tr><td>Keep Subscription</td><td>保留订阅</td></tr>
+                <tr><td>Confirm Cancellation</td><td>确认取消</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="mock" id="subscription-kept">
+          <div class="phone">
+            <div class="screen subscription-detail-screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <a class="back" href="#support-entry" aria-label="Back to Support"></a>
+                <div class="nav-title">Premium Plan</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <div class="plan-hero">
+                  <h3>Widgify Premium</h3>
+                  <div class="status-pill">Active</div>
+                </div>
+                <div class="detail-list">
+                  <div class="detail-row"><span>Next Renewal</span><strong>Sep 23, 2026</strong></div>
+                  <div class="detail-row"><span>Billing Cycle</span><strong>Weekly</strong></div>
+                  <div class="detail-row"><span>Price</span><strong>$2.99/week</strong></div>
+                  <div class="detail-row"><span>Payment Method</span><strong>Stripe</strong></div>
+                </div>
+                <div class="outcome-banner">
+                  <strong>Subscription Kept</strong>
+                  <span>Your subscription will continue and renew on Sep 23, 2026.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>保留订阅结果页说明</h3>
+            <ul>
+              <li>点击 Keep Subscription 后关闭弹窗并回到订阅详情状态，订阅仍为 Active。</li>
+              <li>页面显示轻量成功反馈，确认没有提交取消请求，下次续订日期保持不变。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>保留订阅结果页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Subscription Kept</td><td>订阅已保留</td></tr>
+                <tr><td>Your subscription will continue and renew on Sep 23, 2026.</td><td>订阅将继续，并于 2026 年 9 月 23 日续订。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="mock" id="subscription-canceled">
+          <div class="phone">
+            <div class="screen subscription-detail-screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <a class="back" href="#support-entry" aria-label="Back to Support"></a>
+                <div class="nav-title">Premium Plan</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <div class="plan-hero">
+                  <h3>Widgify Premium</h3>
+                  <div class="status-pill canceled">Canceled</div>
+                </div>
+                <div class="detail-list">
+                  <div class="detail-row"><span>Premium Access Until</span><strong>Sep 23, 2026</strong></div>
+                  <div class="detail-row"><span>Renewal</span><strong>Canceled</strong></div>
+                  <div class="detail-row"><span>Billing Cycle</span><strong>Weekly</strong></div>
+                  <div class="detail-row"><span>Payment Method</span><strong>Stripe</strong></div>
+                </div>
+                <div class="renewal-note">Your subscription has been canceled. Premium access remains active until Sep 23, 2026, and you won't be charged again.</div>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>确认取消结果页说明</h3>
+            <ul>
+              <li>点击 Confirm Cancellation 并收到服务端成功结果后，详情状态更新为 Canceled。</li>
+              <li>页面保留权益到期日，明确当前周期内仍可使用 Premium，之后不会再次扣费。</li>
+              <li>不直接跳到未订阅页，避免用户误以为当前已失去已付款周期内的权益。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>确认取消结果页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Canceled</td><td>已取消续订</td></tr>
+                <tr><td>Premium Access Until</td><td>Premium 权益有效至</td></tr>
+                <tr><td>Renewal</td><td>续订状态</td></tr>
+                <tr><td>Your subscription has been canceled. Premium access remains active until Sep 23, 2026, and you won't be charged again.</td><td>订阅已取消。Premium 权益将保留至 2026 年 9 月 23 日，之后不会再次扣费。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="mock" id="premium-plan-no-subscription">
+          <div class="phone">
+            <div class="screen subscription-detail-screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <a class="back" href="#support-entry" aria-label="Back to Support"></a>
+                <div class="nav-title">Premium Plan</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <div class="plan-hero">
+                  <h3>Widgify Premium</h3>
+                  <div class="status-pill inactive">Not Subscribed</div>
+                </div>
+                <div class="empty-plan">
+                  <h3>No Active Subscription</h3>
+                  <p>We couldn't find an active Apple or Stripe subscription for this account.</p>
+                </div>
+                <div class="empty-note">Already subscribed? Restore purchases to check your Apple and Stripe subscription status again.</div>
+                <div class="empty-actions">
+                  <button class="empty-secondary">Restore Purchases</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>未订阅状态详情页说明</h3>
+            <ul>
+              <li>当服务端未查询到 Apple 或 Stripe 有效订阅时，不展示续订日期、周期、价格和支付方式等空字段。</li>
+              <li>状态区明确展示 Not Subscribed，并说明当前账号未找到有效订阅。</li>
+              <li>页面只保留 Restore Purchases，为已购买但状态未同步的用户提供恢复入口。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>未订阅状态详情页文案翻译</caption>
+              <thead>
+                <tr>
+                  <th>英文文案</th>
+                  <th>中文含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Not Subscribed</td><td>未订阅</td></tr>
+                <tr><td>No Active Subscription</td><td>没有有效订阅</td></tr>
+                <tr><td>We couldn't find an active Apple or Stripe subscription for this account.</td><td>未找到此账号有效的 Apple 或 Stripe 订阅。</td></tr>
+                <tr><td>Already subscribed? Restore purchases to check your Apple and Stripe subscription status again.</td><td>已经订阅？恢复购买可重新检查 Apple 与 Stripe 的订阅状态。</td></tr>
+                <tr><td>Restore Purchases</td><td>恢复购买</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="mock" id="refund-help-form">
           <div class="phone form-phone">
             <div class="screen refund-form-screen">
               <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
@@ -941,7 +1580,7 @@
     <section class="section">
       <h2>二、提交结果与处理路径</h2>
       <div class="grid">
-        <article class="mock">
+        <article class="mock" id="refund-request-sent">
           <div class="phone">
             <div class="screen result-screen">
               <div class="status"><span>5:51 PM</span><span>Wi-Fi 85%</span></div>
