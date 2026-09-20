@@ -1472,7 +1472,7 @@
                 </div>
                 <div class="empty-plan">
                   <h3>No Active Subscription</h3>
-                  <p>We couldn't find an active Stripe subscription for this account.</p>
+                  <p>We couldn't find an active Stripe subscription.</p>
                 </div>
                 <div class="empty-note">Already subscribed through Stripe? Restore purchases to check again. Apple subscriptions are not shown here; view them in Apple Account settings.</div>
                 <div class="empty-actions">
@@ -1486,7 +1486,7 @@
             <ul>
               <li>保留原 Premium Plan、Widgify Premium、Not Subscribed 和 No Active Subscription 页面结构。</li>
               <li>只修改提示文案，说明此处仅检查 Stripe，Apple 订阅需自行前往系统设置查看。</li>
-              <li>页面只保留 Restore Purchases，点击后重新查询当前账号和设备关联的 Stripe 订单状态。</li>
+              <li>页面只保留 Restore Purchases，点击后在订单系统中重新查询是否存在 Stripe 订单。</li>
               <li>重新查询到 Stripe 订单时，刷新为对应订阅详情并开放 Refund Help；仍未找到时保持当前页面。</li>
             </ul>
             <table class="copy-map">
@@ -1495,7 +1495,7 @@
               <tbody>
                 <tr><td>Not Subscribed</td><td>未订阅</td></tr>
                 <tr><td>No Active Subscription</td><td>没有有效订阅</td></tr>
-                <tr><td>We couldn't find an active Stripe subscription for this account.</td><td>未找到此账号有效的 Stripe 订阅。</td></tr>
+                <tr><td>We couldn't find an active Stripe subscription.</td><td>未找到有效的 Stripe 订阅。</td></tr>
                 <tr><td>Already subscribed through Stripe? Restore purchases to check again. Apple subscriptions are not shown here; view them in Apple Account settings.</td><td>已通过 Stripe 订阅？可恢复购买后重新检查。此处不展示 Apple 订阅，请在 Apple 账户设置中查看。</td></tr>
                 <tr><td>Restore Purchases</td><td>恢复购买</td></tr>
               </tbody>
@@ -1805,7 +1805,7 @@
         </div>
         <div class="flow-step">
           <strong>2. Stripe 核验</strong>
-          <span>服务端按账号与历史绑定查找 Stripe 订单，不仅依赖设备 ID。</span>
+          <span>在订单系统中查询是否存在 Stripe 订单，不涉及账号系统。</span>
         </div>
         <div class="flow-step">
           <strong>3. 恢复购买</strong>
