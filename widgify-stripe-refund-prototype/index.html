@@ -1544,7 +1544,6 @@
               <li>本页仅对系统已查询到 Stripe 订单的用户开放，不作为通用反馈入口。</li>
               <li>字段保持原设计：订单邮箱必填；订单号/发票号选填；详情必填；凭证截图可选。</li>
               <li>退款原因保留支付相关问题：重复扣费、套餐错误、已付款未解锁、取消/退款请求、非本人支付、其他。</li>
-              <li>提交时附带 <code>stripe_order_match=found</code>、<code>customer_id</code>、<code>subscription_id</code>、<code>invoice_id</code> 等字段，便于中台直接定位订单。</li>
             </ul>
             <table class="copy-map">
               <caption>表单页文案翻译</caption>
@@ -1725,61 +1724,6 @@
               </tbody>
             </table>
           </div>
-        </article>
-
-        <article class="explain">
-          <h3>字段与中台对接建议</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>字段</th>
-                <th>来源</th>
-                <th>说明</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>entry_eligible</code></td>
-                <td>客户端 / 实验配置</td>
-                <td>仅当 <code>region=US</code> 且分配到 <code>pay_B</code> 时允许进入。</td>
-              </tr>
-              <tr>
-                <td><code>stripe_order_match</code></td>
-                <td>服务端</td>
-                <td><code>found</code> 时解锁详情和 Refund Help；<code>not_found</code> 时只展示 Restore Purchases。</td>
-              </tr>
-              <tr>
-                <td><code>feedback_type</code></td>
-                <td>固定值</td>
-                <td><code>stripe_payment_refund</code>，用于中台单独筛选 Stripe 退款咨询。</td>
-              </tr>
-              <tr>
-                <td><code>refund_reason</code></td>
-                <td>用户选择</td>
-                <td>Duplicate Charge / Wrong Plan / Paid but Locked / Cancel Request / Unauthorized Payment / Other。</td>
-              </tr>
-              <tr>
-                <td><code>purchase_email</code></td>
-                <td>Stripe 订单</td>
-                <td>由已匹配的 Stripe 订单自动带入，页面脱敏展示。</td>
-              </tr>
-              <tr>
-                <td><code>order_id</code> / <code>invoice_id</code></td>
-                <td>服务端</td>
-                <td>从已匹配的 Stripe 订单自动带入，作为客服定位订单的主键。</td>
-              </tr>
-              <tr>
-                <td><code>payment_channel</code></td>
-                <td>客户端</td>
-                <td>固定为 stripe；该入口不处理 Apple IAP 订单。</td>
-              </tr>
-              <tr>
-                <td><code>attachments</code></td>
-                <td>用户上传</td>
-                <td>支付凭证、银行扣费记录、收据截图等。</td>
-              </tr>
-            </tbody>
-          </table>
         </article>
       </div>
     </section>
