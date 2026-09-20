@@ -417,6 +417,7 @@
       border: 1px solid #cfd8e8;
       color: var(--blue);
       background: #fff;
+      text-decoration: none;
     }
     .chips {
       display: grid;
@@ -772,6 +773,14 @@
       gap: 12px;
       align-items: stretch;
     }
+    .section > table + .flow { margin-top: 18px; }
+    .rule-note {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .rule-note + .flow { margin-top: 18px; }
     .flow-step {
       position: relative;
       min-height: 108px;
@@ -918,7 +927,9 @@
     }
     .refund-form-screen .primary {
       position: static;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: calc(100% - 88px);
       height: 44px;
       margin: 12px auto 0;
@@ -957,7 +968,9 @@
     }
     .result-screen .primary {
       position: static;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: calc(100% - 88px);
       height: 46px;
       margin: 14px auto 0;
@@ -970,25 +983,25 @@
     <div class="topbar">
       <div>
         <h1>Widgify Third-party Refund Consultation</h1>
-        <p class="lead">独立退款咨询入口原型，仅面向 Stripe 等第三方支付订单。页面参考 Emojito Feedback 的轻量表单结构，但去掉普通反馈分类，避免用户在退款场景里看到无关选项。</p>
+        <p class="lead">独立退款咨询入口原型，仅面向 Stripe 等第三方支付订单。US 地区 pay_B 用户进入后先检查 Stripe 订单；Apple App Store 订阅不在此处展示或处理。</p>
       </div>
     </div>
 
     <section class="section" id="interaction-overview">
       <h2>整体交互逻辑</h2>
-      <p class="logic-intro">从 Support 入口开始，按用户的订阅状态和点击操作进入对应页面。</p>
+      <p class="logic-intro">从 Support 入口开始，先查询 Stripe 订单，再按结果展示订阅状态与退款帮助。</p>
 
       <div class="logic-entry">
         <a class="logic-node is-start" href="#support-entry">
           <span>1 · 入口</span>
           <strong>打开 Support</strong>
-          <small>展示 Premium Plan；Stripe 订单用户同时展示 Refund Help</small>
+          <small>US + pay_B 用户进入后自动查询 Stripe 订单</small>
         </a>
         <div class="logic-arrow" aria-hidden="true">→</div>
         <div class="logic-node">
-          <span>2 · 用户选择</span>
-          <strong>查看订阅状态，或提交退款咨询</strong>
-          <small>两个入口分别进入下方订阅状态与退款帮助流程</small>
+          <span>2 · 查询结果</span>
+          <strong>展示 Stripe 订阅状态</strong>
+          <small>找到 Stripe 订单时同时展示 Refund Help</small>
         </div>
       </div>
 
@@ -997,33 +1010,33 @@
           <div class="logic-lane-head">
             <div class="logic-lane-tag">A</div>
             <div>
-              <strong>Premium Plan · 订阅状态流程</strong>
-              <span>先查询 Apple 与 Stripe 订阅状态，再展示对应详情</span>
+              <strong>Premium Plan · Stripe 订阅状态流程</strong>
+              <span>此处只查询和展示 Stripe 订阅状态</span>
             </div>
           </div>
 
           <div class="logic-subpath">
-            <div class="logic-branch-label">查询到有效订阅</div>
+            <div class="logic-branch-label">订单状态为 Active</div>
             <div class="logic-chain">
               <a class="logic-node is-success" href="#premium-plan-detail">
                 <span>Active</span>
                 <strong>订阅详情页</strong>
-                <small>显示续订日、周期、价格与渠道</small>
+                <small>显示续订日、周期、价格与 Stripe 支付方式</small>
               </a>
               <div class="logic-arrow" aria-hidden="true">→</div>
-              <a class="logic-node" href="#cancel-subscription-confirm">
+              <a class="logic-node" href="#premium-plan-detail">
                 <span>点击取消</span>
                 <strong>Cancel Subscription</strong>
-                <small>进入二次确认弹窗</small>
+                <small>仅对 Active Stripe 订阅展示</small>
               </a>
               <div class="logic-arrow" aria-hidden="true">→</div>
               <a class="logic-node is-warning" href="#cancel-subscription-confirm">
                 <span>二次确认</span>
                 <strong>选择保留或确认取消</strong>
-                <small>此时尚未改变订阅状态</small>
+                <small>确认后只取消 Stripe 续费</small>
               </a>
             </div>
-            <div class="logic-results-label">确认弹窗的两个结果分支 ↓</div>
+            <div class="logic-results-label">取消确认的两个结果分支 ↓</div>
             <div class="logic-results">
               <a class="logic-node is-success" href="#subscription-kept">
                 <span>Keep Subscription</span>
@@ -1039,7 +1052,7 @@
           </div>
 
           <div class="logic-subpath">
-            <div class="logic-branch-label">未查询到有效订阅</div>
+            <div class="logic-branch-label">未查询到 Stripe 订单</div>
             <div class="logic-chain">
               <a class="logic-node is-muted" href="#premium-plan-no-subscription">
                 <span>Not Subscribed</span>
@@ -1050,7 +1063,7 @@
               <a class="logic-node" href="#premium-plan-no-subscription">
                 <span>唯一操作</span>
                 <strong>Restore Purchases</strong>
-                <small>重新检查 Apple 与 Stripe 状态</small>
+                <small>重新查询 Stripe 订单状态</small>
               </a>
               <div class="logic-arrow" aria-hidden="true">→</div>
               <div class="logic-node">
@@ -1067,7 +1080,7 @@
             <div class="logic-lane-tag">B</div>
             <div>
               <strong>Refund Help · 退款咨询流程</strong>
-              <span>仅对使用 Stripe 支付的用户展示</span>
+              <span>仅在查询到 Stripe 订单时展示</span>
             </div>
           </div>
           <div class="logic-vertical">
@@ -1086,7 +1099,7 @@
             <a class="logic-node is-success" href="#refund-request-sent">
               <span>Request Sent</span>
               <strong>展示提交成功页</strong>
-              <small>客服审核订单并通过邮件反馈结果</small>
+              <small>客服审核 Stripe 订单并通过邮件反馈结果</small>
             </a>
           </div>
         </div>
@@ -1114,14 +1127,14 @@
                     <div>Premium Plan<span class="sub">Active · Stripe weekly plan</span></div>
                     <div class="chev"></div>
                   </a>
-                  <div class="setting-row">
+                  <a class="setting-row" href="#refund-help-form">
                     <div class="circle-icon">$</div>
-                    <div>Refund Help<span class="sub">For third-party checkout orders</span></div>
+                    <div>Refund Help<span class="sub">For Stripe checkout orders</span></div>
                     <div class="chev"></div>
-                  </div>
+                  </a>
                 </div>
                 <div class="refund-only">
-                  Apple in-app purchases should continue to use Apple's refund path. This entry is shown only when the user has a third-party payment order.
+                  This page only shows Stripe subscription status. To view or manage an Apple subscription, open Settings &gt; Apple Account &gt; Subscriptions.
                 </div>
               </div>
             </div>
@@ -1129,9 +1142,9 @@
           <div class="explain">
             <h3>入口说明</h3>
             <ul>
-              <li>采用独立入口，不复用普通 Feedback 页面，避免出现 App Bug、Suggestion 等无关分类。</li>
-              <li>入口建议展示在订阅管理/设置页支付帮助区域，仅对第三方支付订单用户展示。</li>
-              <li>若用户没有第三方支付订单，退款入口不展示，仍走普通订阅管理或 Apple 官方退款路径。</li>
+              <li>该状态只在系统已匹配到 Stripe 订单时展示，同时开放 Stripe 订阅详情与 Refund Help。</li>
+              <li>保留原入口页的 Subscription、Premium Plan 和 Refund Help 结构，仅调整必要提示文案。</li>
+              <li>页面不提供 Apple 订阅快捷入口，只说明 Apple 订阅需在系统设置中查看。</li>
             </ul>
             <table class="copy-map">
               <caption>入口页文案翻译</caption>
@@ -1167,12 +1180,12 @@
                   <td>退款帮助</td>
                 </tr>
                 <tr>
-                  <td>For third-party checkout orders</td>
-                  <td>适用于第三方收银台订单</td>
+                  <td>For Stripe checkout orders</td>
+                  <td>适用于 Stripe 收银台订单</td>
                 </tr>
                 <tr>
-                  <td>Apple in-app purchases should continue to use Apple's refund path. This entry is shown only when the user has a third-party payment order.</td>
-                  <td>Apple 应用内购买继续走 Apple 官方退款路径。该入口仅在用户存在第三方支付订单时展示。</td>
+                  <td>This page only shows Stripe subscription status. To view or manage an Apple subscription, open Settings &gt; Apple Account &gt; Subscriptions.</td>
+                  <td>此页仅展示 Stripe 订阅状态。如需查看或管理 Apple 订阅，请前往“设置 &gt; Apple 账户 &gt; 订阅”。</td>
                 </tr>
               </tbody>
             </table>
@@ -1199,7 +1212,7 @@
                   <div class="detail-row"><span>Price</span><strong>$2.99/week</strong></div>
                   <div class="detail-row"><span>Payment Method</span><strong>Stripe</strong></div>
                 </div>
-                <div class="renewal-note">Your subscription renews automatically each week. You can cancel at any time before the next renewal date.</div>
+                <div class="renewal-note">Your Stripe subscription renews automatically each week. Canceling here only affects this Stripe subscription.</div>
                 <a class="primary primary-link" href="#cancel-subscription-confirm">Cancel Subscription</a>
               </div>
             </div>
@@ -1207,10 +1220,10 @@
           <div class="explain">
             <h3>订阅详情页说明</h3>
             <ul>
-              <li>用户在入口页点击 Premium Plan 后进入本页，返回按钮回到 Support 入口。</li>
-              <li>清晰展示当前续订状态、下次续订日期、订阅周期、价格与支付渠道。</li>
-              <li>取消订阅按钮复用退款帮助页的蓝色主按钮样式，保持流程视觉一致。</li>
-              <li>点击 Cancel Subscription 后进入二次确认页，明确权益保留日期与停止续费结果。</li>
+              <li>保留原 Premium Plan 详情页结构，只展示已匹配的 Stripe 订阅数据。</li>
+              <li>仅当 Stripe 订阅处于 Active 且仍在自动续费时，展示 Cancel Subscription。</li>
+              <li>点击后进入 Stripe 取消二次确认，明确权益保留日期与停止续费结果。</li>
+              <li>在原续费提示区内说明“本操作仅影响 Stripe 订阅”，不新增 UI 区块。</li>
             </ul>
             <table class="copy-map">
               <caption>订阅详情页文案翻译</caption>
@@ -1232,7 +1245,7 @@
                 <tr><td>$2.99/week</td><td>每周 2.99 美元</td></tr>
                 <tr><td>Payment Method</td><td>支付方式</td></tr>
                 <tr><td>Stripe</td><td>Stripe 支付</td></tr>
-                <tr><td>Your subscription renews automatically each week. You can cancel at any time before the next renewal date.</td><td>订阅将每周自动续订。你可以在下次续订日期前随时取消。</td></tr>
+                <tr><td>Your Stripe subscription renews automatically each week. Canceling here only affects this Stripe subscription.</td><td>Stripe 订阅将每周自动续费。在此取消只会影响该 Stripe 订阅。</td></tr>
                 <tr><td>Cancel Subscription</td><td>取消订阅</td></tr>
               </tbody>
             </table>
@@ -1265,7 +1278,7 @@
                 <div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="cancel-dialog-title">
                   <div class="confirm-content">
                     <h3 id="cancel-dialog-title">Cancel Subscription?</h3>
-                    <p>Your Premium access will remain active until Sep 23, 2026. You won't be charged again after cancellation.</p>
+                    <p>Your Premium access will remain active until Sep 23, 2026. This only stops future renewals for the Stripe subscription shown here.</p>
                   </div>
                   <div class="confirm-actions">
                     <a class="confirm-action" href="#subscription-kept">Keep Subscription</a>
@@ -1278,8 +1291,9 @@
           <div class="explain">
             <h3>取消订阅确认页说明</h3>
             <ul>
-              <li>用户在订阅详情页点击 Cancel Subscription 后，先展示二次确认弹窗，避免误操作。</li>
-              <li>弹窗明确说明当前权益保留到本计费周期结束，并停止后续自动扣费。</li>
+              <li>用户在 Stripe 订阅详情页点击 Cancel Subscription 后，先展示二次确认弹窗，避免误操作。</li>
+              <li>保留原弹窗标题和按钮，仅在说明文案中明确本流程只停止 Stripe 续费。</li>
+              <li>弹窗明确说明当前权益保留到本计费周期结束，并停止后续 Stripe 自动扣费。</li>
               <li>Keep Subscription 进入订阅保留结果页；Confirm Cancellation 提交请求后进入取消结果页。</li>
             </ul>
             <table class="copy-map">
@@ -1292,7 +1306,7 @@
               </thead>
               <tbody>
                 <tr><td>Cancel Subscription?</td><td>确认取消订阅？</td></tr>
-                <tr><td>Your Premium access will remain active until Sep 23, 2026. You won't be charged again after cancellation.</td><td>Premium 权益将保留至 2026 年 9 月 23 日。取消后不会再次扣费。</td></tr>
+                <tr><td>Your Premium access will remain active until Sep 23, 2026. This only stops future renewals for the Stripe subscription shown here.</td><td>Premium 权益将保留至 2026 年 9 月 23 日。此操作只会停止当前显示的 Stripe 订阅续费。</td></tr>
                 <tr><td>Keep Subscription</td><td>保留订阅</td></tr>
                 <tr><td>Confirm Cancellation</td><td>确认取消</td></tr>
               </tbody>
@@ -1343,7 +1357,7 @@
               </thead>
               <tbody>
                 <tr><td>Subscription Kept</td><td>订阅已保留</td></tr>
-                <tr><td>Your subscription will continue and renew on Sep 23, 2026.</td><td>订阅将继续，并于 2026 年 9 月 23 日续订。</td></tr>
+                <tr><td>Your subscription will continue and renew on Sep 23, 2026.</td><td>订阅将继续，并于 2026 年 9 月 23 日续费。</td></tr>
               </tbody>
             </table>
           </div>
@@ -1369,7 +1383,7 @@
                   <div class="detail-row"><span>Billing Cycle</span><strong>Weekly</strong></div>
                   <div class="detail-row"><span>Payment Method</span><strong>Stripe</strong></div>
                 </div>
-                <div class="renewal-note">Your subscription has been canceled. Premium access remains active until Sep 23, 2026, and you won't be charged again.</div>
+                <div class="renewal-note">Your Stripe subscription has been canceled. Premium access remains active until Sep 23, 2026, and Stripe will not renew it again.</div>
               </div>
             </div>
           </div>
@@ -1392,7 +1406,51 @@
                 <tr><td>Canceled</td><td>已取消续订</td></tr>
                 <tr><td>Premium Access Until</td><td>Premium 权益有效至</td></tr>
                 <tr><td>Renewal</td><td>续订状态</td></tr>
-                <tr><td>Your subscription has been canceled. Premium access remains active until Sep 23, 2026, and you won't be charged again.</td><td>订阅已取消。Premium 权益将保留至 2026 年 9 月 23 日，之后不会再次扣费。</td></tr>
+                <tr><td>Your Stripe subscription has been canceled. Premium access remains active until Sep 23, 2026, and Stripe will not renew it again.</td><td>Stripe 订阅已取消。Premium 权益将保留至 2026 年 9 月 23 日，Stripe 不会再自动续费。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="mock" id="support-entry-no-order">
+          <div class="phone">
+            <div class="screen">
+              <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
+              <div class="nav">
+                <div class="back"></div>
+                <div class="nav-title">Support</div>
+                <div></div>
+              </div>
+              <div class="screen-body">
+                <p class="intro">Manage your subscription and get help with payment questions.</p>
+                <div class="label">Subscription</div>
+                <div class="setting-list">
+                  <a class="setting-row" href="#premium-plan-no-subscription">
+                    <div class="circle-icon">P</div>
+                    <div>Premium Plan<span class="sub">No active Stripe subscription</span></div>
+                    <div class="chev"></div>
+                  </a>
+                </div>
+                <div class="refund-only">
+                  This page only checks subscriptions purchased through Stripe. Apple subscriptions are not shown here; view them in Apple Account settings.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="explain">
+            <h3>入口页：未找到 Stripe 订单</h3>
+            <ul>
+              <li>入口仍对 US + pay_B 用户展示，但自动核验未命中 Stripe 订单时，不展示 Refund Help。</li>
+              <li>只保留原 Premium Plan 入口，用户可进入详情页重新执行 Restore Purchases。</li>
+              <li>Apple 用户与完全未订阅用户共用此状态；页面不判断、不展示也不管理 Apple 订阅。</li>
+            </ul>
+            <table class="copy-map">
+              <caption>未找到 Stripe 订单时的入口文案</caption>
+              <thead><tr><th>英文文案</th><th>中文含义</th></tr></thead>
+              <tbody>
+                <tr><td>Manage your subscription and get help with payment questions.</td><td>管理订阅，并获取支付问题帮助。</td></tr>
+                <tr><td>No active Stripe subscription</td><td>没有有效的 Stripe 订阅</td></tr>
+                <tr><td>This page only checks subscriptions purchased through Stripe. Apple subscriptions are not shown here; view them in Apple Account settings.</td><td>此页仅检查通过 Stripe 购买的订阅。此处不展示 Apple 订阅，请在 Apple 账户设置中查看。</td></tr>
               </tbody>
             </table>
           </div>
@@ -1403,7 +1461,7 @@
             <div class="screen subscription-detail-screen">
               <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
               <div class="nav">
-                <a class="back" href="#support-entry" aria-label="Back to Support"></a>
+                <a class="back" href="#support-entry-no-order" aria-label="Back to Support"></a>
                 <div class="nav-title">Premium Plan</div>
                 <div></div>
               </div>
@@ -1414,9 +1472,9 @@
                 </div>
                 <div class="empty-plan">
                   <h3>No Active Subscription</h3>
-                  <p>We couldn't find an active Apple or Stripe subscription for this account.</p>
+                  <p>We couldn't find an active Stripe subscription for this account.</p>
                 </div>
-                <div class="empty-note">Already subscribed? Restore purchases to check your Apple and Stripe subscription status again.</div>
+                <div class="empty-note">Already subscribed through Stripe? Restore purchases to check again. Apple subscriptions are not shown here; view them in Apple Account settings.</div>
                 <div class="empty-actions">
                   <button class="empty-secondary">Restore Purchases</button>
                 </div>
@@ -1424,25 +1482,21 @@
             </div>
           </div>
           <div class="explain">
-            <h3>未订阅状态详情页说明</h3>
+            <h3>Stripe 订单未找到详情页</h3>
             <ul>
-              <li>当服务端未查询到 Apple 或 Stripe 有效订阅时，不展示续订日期、周期、价格和支付方式等空字段。</li>
-              <li>状态区明确展示 Not Subscribed，并说明当前账号未找到有效订阅。</li>
-              <li>页面只保留 Restore Purchases，为已购买但状态未同步的用户提供恢复入口。</li>
+              <li>保留原 Premium Plan、Widgify Premium、Not Subscribed 和 No Active Subscription 页面结构。</li>
+              <li>只修改提示文案，说明此处仅检查 Stripe，Apple 订阅需自行前往系统设置查看。</li>
+              <li>页面只保留 Restore Purchases，点击后重新查询当前账号和设备关联的 Stripe 订单状态。</li>
+              <li>重新查询到 Stripe 订单时，刷新为对应订阅详情并开放 Refund Help；仍未找到时保持当前页面。</li>
             </ul>
             <table class="copy-map">
-              <caption>未订阅状态详情页文案翻译</caption>
-              <thead>
-                <tr>
-                  <th>英文文案</th>
-                  <th>中文含义</th>
-                </tr>
-              </thead>
+              <caption>Stripe 订单未找到文案</caption>
+              <thead><tr><th>英文文案</th><th>中文含义</th></tr></thead>
               <tbody>
                 <tr><td>Not Subscribed</td><td>未订阅</td></tr>
                 <tr><td>No Active Subscription</td><td>没有有效订阅</td></tr>
-                <tr><td>We couldn't find an active Apple or Stripe subscription for this account.</td><td>未找到此账号有效的 Apple 或 Stripe 订阅。</td></tr>
-                <tr><td>Already subscribed? Restore purchases to check your Apple and Stripe subscription status again.</td><td>已经订阅？恢复购买可重新检查 Apple 与 Stripe 的订阅状态。</td></tr>
+                <tr><td>We couldn't find an active Stripe subscription for this account.</td><td>未找到此账号有效的 Stripe 订阅。</td></tr>
+                <tr><td>Already subscribed through Stripe? Restore purchases to check again. Apple subscriptions are not shown here; view them in Apple Account settings.</td><td>已通过 Stripe 订阅？可恢复购买后重新检查。此处不展示 Apple 订阅，请在 Apple 账户设置中查看。</td></tr>
                 <tr><td>Restore Purchases</td><td>恢复购买</td></tr>
               </tbody>
             </table>
@@ -1454,12 +1508,12 @@
             <div class="screen refund-form-screen">
               <div class="status"><span>5:50 PM</span><span>Wi-Fi 85%</span></div>
               <div class="nav">
-                <div class="back"></div>
+                <a class="back" href="#support-entry" aria-label="Back to Support"></a>
                 <div class="nav-title">Refund Help</div>
                 <div></div>
               </div>
               <div class="screen-body">
-                <p class="intro">Tell us about your third-party payment. We'll review your order and reply by email.</p>
+                <p class="intro">Tell us about your Stripe payment. We'll review your order and reply by email.</p>
                 <div class="label">Refund Reason</div>
                 <div class="chips">
                   <div class="chip selected">Duplicate</div>
@@ -1480,17 +1534,17 @@
                   <div class="counter">0/500</div>
                 </div>
                 <div class="notice">Attach receipt or bank charge record if needed.</div>
-                <button class="primary">Submit</button>
+                <a class="primary primary-link" href="#refund-request-sent">Submit</a>
               </div>
             </div>
           </div>
           <div class="explain">
             <h3>表单说明</h3>
             <ul>
-              <li>退款原因只保留支付相关问题：重复扣费、套餐错误、已付款未解锁、取消/退款请求、非本人支付、其他。</li>
-              <li>字段建议：订单邮箱必填；订单号/发票号选填但强提示；详情必填；凭证截图可选。</li>
-              <li>客户端自动带上 <code>user_id</code>、<code>app_version</code>、<code>device_region</code>、<code>storefront</code>、<code>payment_channel=stripe</code>、<code>subscription_id</code>、<code>invoice_id</code> 等信息。</li>
-              <li>提交后进入中台反馈系统，由运营/客服查询 Stripe 订单并处理退款、取消订阅或权益修复。</li>
+              <li>本页仅对系统已查询到 Stripe 订单的用户开放，不作为通用反馈入口。</li>
+              <li>字段保持原设计：订单邮箱必填；订单号/发票号选填；详情必填；凭证截图可选。</li>
+              <li>退款原因保留支付相关问题：重复扣费、套餐错误、已付款未解锁、取消/退款请求、非本人支付、其他。</li>
+              <li>提交时附带 <code>stripe_order_match=found</code>、<code>customer_id</code>、<code>subscription_id</code>、<code>invoice_id</code> 等字段，便于中台直接定位订单。</li>
             </ul>
             <table class="copy-map">
               <caption>表单页文案翻译</caption>
@@ -1506,8 +1560,8 @@
                   <td>退款帮助</td>
                 </tr>
                 <tr>
-                  <td>Tell us about your third-party payment. We'll review your order and reply by email.</td>
-                  <td>请告诉我们你的第三方支付问题。我们会审核订单，并通过邮件回复。</td>
+                  <td>Tell us about your Stripe payment. We'll review your order and reply by email.</td>
+                  <td>请告诉我们你的 Stripe 支付问题。我们会审核订单，并通过邮件回复。</td>
                 </tr>
                 <tr>
                   <td>Refund Reason</td>
@@ -1593,7 +1647,7 @@
                 <div class="success-card">
                   <div class="success-mark">✓</div>
                   <h3>Refund Request Sent</h3>
-                  <p>We've received your request. Our support team will review your third-party payment order and reply by email.</p>
+                  <p>We've received your request. Our support team will review your Stripe payment order and reply by email.</p>
                 </div>
                 <ul class="timeline">
                   <li><i>1</i><div>Request submitted<span>Order info and attachments are sent to support.</span></div></li>
@@ -1603,7 +1657,7 @@
                 <div class="refund-only">
                   For faster handling, please avoid opening a bank dispute before our team reviews the order.
                 </div>
-                <button class="primary">Done</button>
+                <a class="primary primary-link" href="#support-entry">Done</a>
               </div>
             </div>
           </div>
@@ -1611,9 +1665,9 @@
             <h3>提交后说明</h3>
             <ul>
               <li>提交成功后只承诺“收到并审核”，不在 App 内承诺一定退款。</li>
-              <li>处理结果通过邮件反馈，便于运营保留沟通记录，也能降低用户直接走银行投诉或 Stripe 投诉的概率。</li>
-              <li>若核实为 Apple IAP 订单，邮件或 App 内提示用户跳转 Apple 官方退款入口处理。</li>
-              <li>若核实为第三方支付订单，客服按 Stripe 后台能力处理退款、取消续订或补发权益。</li>
+              <li>处理结果通过已验证的购买邮箱反馈，便于保留订单与沟通记录。</li>
+              <li>提交前已确认订单来自 Stripe，中台不再将该队列用于 Apple IAP 查询或处理。</li>
+              <li>客服按 Stripe 后台能力处理退款、取消续订或权益修复，不在 App 内预先承诺一定退款。</li>
             </ul>
             <table class="copy-map">
               <caption>提交成功页文案翻译</caption>
@@ -1633,8 +1687,8 @@
                   <td>退款请求已提交</td>
                 </tr>
                 <tr>
-                  <td>We've received your request. Our support team will review your third-party payment order and reply by email.</td>
-                  <td>我们已收到你的请求。客服团队会审核你的第三方支付订单，并通过邮件回复。</td>
+                  <td>We've received your request. Our support team will review your Stripe payment order and reply by email.</td>
+                  <td>我们已收到你的请求。客服团队会审核你的 Stripe 支付订单，并通过邮件回复。</td>
                 </tr>
                 <tr>
                   <td>Request submitted</td>
@@ -1685,9 +1739,19 @@
             </thead>
             <tbody>
               <tr>
+                <td><code>entry_eligible</code></td>
+                <td>客户端 / 实验配置</td>
+                <td>仅当 <code>region=US</code> 且分配到 <code>pay_B</code> 时允许进入。</td>
+              </tr>
+              <tr>
+                <td><code>stripe_order_match</code></td>
+                <td>服务端</td>
+                <td><code>found</code> 时解锁详情和 Refund Help；<code>not_found</code> 时只展示 Restore Purchases。</td>
+              </tr>
+              <tr>
                 <td><code>feedback_type</code></td>
                 <td>固定值</td>
-                <td>Third-party payment refund，用于中台单独筛选退款咨询。</td>
+                <td><code>stripe_payment_refund</code>，用于中台单独筛选 Stripe 退款咨询。</td>
               </tr>
               <tr>
                 <td><code>refund_reason</code></td>
@@ -1695,14 +1759,14 @@
                 <td>Duplicate Charge / Wrong Plan / Paid but Locked / Cancel Request / Unauthorized Payment / Other。</td>
               </tr>
               <tr>
-                <td><code>order_email</code></td>
-                <td>用户填写</td>
-                <td>必填，用于客服查找 Stripe Customer 或收据。</td>
+                <td><code>purchase_email</code></td>
+                <td>Stripe 订单</td>
+                <td>由已匹配的 Stripe 订单自动带入，页面脱敏展示。</td>
               </tr>
               <tr>
                 <td><code>order_id</code> / <code>invoice_id</code></td>
-                <td>用户填写或客户端带入</td>
-                <td>可选；如 App 已缓存 Stripe 订单信息，则自动带入。</td>
+                <td>服务端</td>
+                <td>从已匹配的 Stripe 订单自动带入，作为客服定位订单的主键。</td>
               </tr>
               <tr>
                 <td><code>payment_channel</code></td>
@@ -1721,27 +1785,39 @@
     </section>
 
     <section class="section">
-      <h2>三、退款咨询流程</h2>
+      <h2>三、页面展示判断规则</h2>
+      <p class="logic-intro">以下规则均针对 US 地区且命中 pay_B 的用户；页面只查询 Stripe 订单状态。</p>
+      <table>
+        <thead>
+          <tr><th>Stripe 查询结果</th><th>Support 入口页</th><th>Premium Plan 详情页</th><th>可用操作</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Active 且自动续费</td><td>Premium Plan + Refund Help</td><td>展示 Active、续费日期、周期、价格和 Stripe 支付方式</td><td>Cancel Subscription + Refund Help</td></tr>
+          <tr><td>已取消续费或已到期</td><td>Premium Plan + Refund Help</td><td>展示 Canceled / Expired 及权益到期日期</td><td>仅 Refund Help</td></tr>
+          <tr><td>未找到 Stripe 订单</td><td>仅 Premium Plan</td><td>展示 Not Subscribed，不展示续费、价格和支付方式</td><td>仅 Restore Purchases</td></tr>
+        </tbody>
+      </table>
+      <p class="rule-note">Restore Purchases 会重新查询 Stripe 订单：查到后按上表对应状态刷新，仍未查到则保持 Not Subscribed。Apple 订阅不参与判断，只通过提示文案说明查看路径。</p>
       <div class="flow">
         <div class="flow-step">
-          <strong>1. 识别订单</strong>
-          <span>用户进入设置页，App 判断存在第三方支付订单后展示 Refund Help。</span>
+          <strong>1. 入口校验</strong>
+          <span>确认用户为 US 地区且已分配 pay_B 方案。</span>
         </div>
         <div class="flow-step">
-          <strong>2. 填写表单</strong>
-          <span>用户选择退款原因，填写订单邮箱、订单号和问题详情，可上传支付凭证。</span>
+          <strong>2. Stripe 核验</strong>
+          <span>服务端按账号与历史绑定查找 Stripe 订单，不仅依赖设备 ID。</span>
         </div>
         <div class="flow-step">
-          <strong>3. 提交中台</strong>
-          <span>App 将用户填写内容和客户端订单信息提交到中台反馈系统。</span>
+          <strong>3. 恢复购买</strong>
+          <span>未命中时，用户可点击 Restore Purchases 重新查询 Stripe 订单。</span>
         </div>
         <div class="flow-step">
-          <strong>4. 人工处理</strong>
-          <span>运营/客服在 Stripe 或内部后台核验订单，处理退款、取消续订或补发权益。</span>
+          <strong>4. 功能解锁</strong>
+          <span>已匹配 Stripe 订单开放详情与 Refund Help；Active 订单可取消续费。</span>
         </div>
         <div class="flow-step">
-          <strong>5. 邮件反馈</strong>
-          <span>处理结果通过邮件通知用户；异常订单进入风险记录和退款率监控。</span>
+          <strong>5. 审核与邮件反馈</strong>
+          <span>客服核验 Stripe 订单并处理退款或权益问题，结果通过邮件通知。</span>
         </div>
       </div>
     </section>
